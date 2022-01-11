@@ -1,24 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
-
+import {useState,useEffect} from "react";
+import ImageCard from "./components/Main/imageCard";
 function App() {
+
+    const [image,setImage]= useState([])
+
+
+    function getImageFromServer(){
+        fetch("http://localhost:3000/images").then(r => r.json())
+            .then(imgaesFromAPI=>setImage(imgaesFromAPI))
+    }
+
+
+    useEffect( () => {
+                getImageFromServer()
+            },[])
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <body>
+      <img className="logo" src="assets/hoxtagram-logo.png"/>
+
+      <section className="image-container">
+          {image.map((image)=>
+
+              <ImageCard key={image.id} comments={image.comments} />
+
+          )}
+
+
+      </section>
+      </body>
   );
 }
 
